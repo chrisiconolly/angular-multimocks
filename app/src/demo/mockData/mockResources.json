@@ -1,14 +1,11 @@
 {
   "_default": [
-    "cart/empty.json"
+    "games/someGames.json"
   ],
-  "someItems": [
-    "cart/someItems.json"
+  "empty-cart": [
+    "games/empty.json"
   ],
-  "outOfStock": [
-    "cart/outOfStock.json"
-  ],
-  "slowResponse": [
-    "cart/slowResponse.json"
+  "slow-response": [
+    "games/slowResponse.json"
   ]
 }

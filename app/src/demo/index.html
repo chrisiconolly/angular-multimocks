@@ -3,26 +3,133 @@
   <head>
     <meta charset="utf-8">
     <title>Angular Scenario Demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+      .scenarios li a:link {
+        text-decoration: none;
+      }
+      .scenarios li a {
+        color: white;
+      }
+      .scenarios li a i {
+        margin-right: 2px;
+      }
+      .ng-cloak {
+        display: none !important;
+      }
+    </style>
   </head>
 
-  <body ng-controller="demoCtrl">
-    <div>
-      <h1>Angular Scenario Demo</h1>
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <div class="media">
+          <a class="pull-left" href="#">
+            <img src="logo.png" width="100">
+          </a>
 
-      <h2>Scenarios</h2>
+          <div class="media-body">
+            <h1 class="text-muted">Angular Multimocks</h1>
+          </div>
+        </div>
+      </div>
 
-      <ul>
-        <li><a href="?">Empty cart</a></li>
-        <li><a href="?scenario=someItems">2 items in cart</a></li>
-        <li><a href="?scenario=outOfStock">Out of stock items</a></li>
-        <li><a href="?scenario=slowResponse">Response with a delay</a></li>
-      </ul>
+      <div class="">
+        <p class="lead">
+          Angular Multimocks lets you test how your app behaves with different
+          responses from an API.
+        </p>
 
-      <h2>Response</h2>
+        <p class="text-center">
+          <iframe src="http://ghbtns.com/github-btn.html?user=wongatech&repo=angular-multimocks&type=watch&count=true"
+                  allowtransparency="true" frameborder="0" scrolling="0"
+                  width="110" height="20"></iframe>
+          <iframe src="http://ghbtns.com/github-btn.html?user=wongatech&repo=angular-multimocks&type=fork&count=true"
+                  allowtransparency="true" frameborder="0" scrolling="0"
+                  width="110" height="20"></iframe>
+          <iframe src="http://ghbtns.com/github-btn.html?user=wongatech&repo=angular-multimocks&type=follow&count=true"
+                  allowtransparency="true" frameborder="0" scrolling="0"
+                  width="200" height="20"></iframe>
+          <a class="twitter-share-button"
+            href="https://twitter.com/intent/tweet" data-count="none">
+            Tweet</a>
+          <a href="https://twitter.com/wongatech"
+             class="twitter-follow-button">Follow
+            @wongatech</a>
+          <script>
+            window.twttr = (function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+              if (d.getElementById(id)) return t;
+              js = d.createElement(s);
+              js.id = id;
+              js.src = "https://platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js, fjs);
+              t._e = [];
+              t.ready = function(f) {
+                t._e.push(f);
+              };
+              return t;
+            }(document, "script", "twitter-wjs"));
+          </script>
+        </p>
+      </div>
 
-      <pre>{{method}} {{uri}}</pre>
+      <div class="row marketing">
+        <div ng-app="demo" ng-controller="demoCtrl" class="ng-cloak">
+          <h2>Scenarios</h2>
 
-      <pre>{{data | json}}</pre>
+          <ul class="list-inline scenarios">
+            <li class="btn btn-success">
+              <a href="?">
+                <i class="glyphicon glyphicon-refresh"></i>
+                <span>Some Items</span>
+              </a>
+            </li>
+            <li class="btn btn-success">
+              <a href="?scenario=empty-cart">
+                <i class="glyphicon glyphicon-refresh"></i>
+                <span>Empty cart</span>
+              </a>
+            </li>
+            <li class="btn btn-success">
+              <a href="?scenario=slow-response">
+                <i class="glyphicon glyphicon-refresh"></i>
+                <span>Response with a delay</span>
+              </a>
+            </li>
+          </ul>
+          <div class="container">
+            <h1>Great Games</h1>
+          </div>
+          <div class="container">
+            <img src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" ng-show="loading" class="center-block"/>
+            <table ng-hide="loading" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Videogame</th>
+                  <th>Release Year</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="game in games | orderBy:'position'">
+                  <th>{{$index + 1}}</th>
+                  <th>{{ game.name }}</th>
+                  <th>{{ game.year }}</th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="footer text-center small" style="margin:20px;">
+        <p>© Wonga 2015 -
+          <a href="http://tech.wonga.com" role="button">
+            Wonga tech website
+          </a>
+        </p>
+      </div>
     </div>
 
     <script src="/node_modules/angular/angular.js"></script>
@@ -32,19 +139,17 @@
     <script src="mockOutput.js"></script>
 
     <script>
-      // simple app which makes a request and displays the results in the
-      // template
       angular
         .module('demo', ['scenario'])
         .controller('demoCtrl', ['$scope', '$http', function ($scope, $http) {
-          $scope.values = {};
-          $scope.method = 'GET';
-          $scope.uri = '/customer/123/cart';
-          $http.get($scope.uri).then(function (response) {
-            $scope.data = response.data;
+          $scope.games = [];
+          $scope.loading = true;
+          $http.get('/games').then(function (response) {
+            $scope.loading = false;
+            $scope.games = response.data.games;
           });
         }]);
-   </script>
+    </script>
    <script src="//localhost:35729/livereload.js"></script>
  </body>
 </html>
