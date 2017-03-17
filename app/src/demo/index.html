@@ -98,6 +98,12 @@
                 <span>Response with a delay</span>
               </a>
             </li>
+            <li class="btn btn-success">
+              <a href="?scenario=not-found">
+                <i class="glyphicon glyphicon-refresh"></i>
+                <span>Not found response with a delay</span>
+              </a>
+            </li>
           </ul>
           <div class="container">
             <h1>Great Games</h1>
@@ -145,8 +151,10 @@
           $scope.games = [];
           $scope.loading = true;
           $http.get('/games').then(function (response) {
-            $scope.loading = false;
             $scope.games = response.data.games;
+          })
+          .finally(function () {
+            $scope.loading = false;
           });
         }]);
     </script>

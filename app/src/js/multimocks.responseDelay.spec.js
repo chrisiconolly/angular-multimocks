@@ -37,22 +37,22 @@ describe('multimocks.responseDelay', function () {
   });
 
   describe('config', function () {
-    it('should add responseDelay to the $httpProvider interceptors',
+    it('should add delayResponses to the $httpProvider interceptors',
       function () {
         // Assert
-        expect(httpProvider.interceptors).toEqual(['responseDelay']);
+        expect(httpProvider.interceptors).toEqual(['delayResponses']);
       });
   });
 
-  describe('responseDelay', function () {
-    describe('response', function () {
+  describe('delayMockResponse', function () {
+    describe('delay', function () {
       it('should return a promise',
         function () {
           // Arrange
           scenarioMocks.getDelayForResponse.and.returnValue();
 
           // Act
-          var result = responseDelay.response();
+          var result = delayMockResponse.delay();
 
           // Assert
           expect(result).toBe('mypromise');
@@ -64,7 +64,7 @@ describe('multimocks.responseDelay', function () {
           scenarioMocks.getDelayForResponse.and.returnValue(123);
 
           // Act
-          responseDelay.response();
+          delayMockResponse.delay();
 
           // Assert
           expect($timeout).toHaveBeenCalledWith(jasmine.any(Function), 123);
@@ -76,7 +76,7 @@ describe('multimocks.responseDelay', function () {
           scenarioMocks.getDelayForResponse.and.returnValue();
 
           // Act
-          responseDelay.response('foo');
+          delayMockResponse.delay('foo');
           /*
            * Because we are passing an anonymous function to $timeout we can't
            * assert that mockFn is being passed to $timeout.

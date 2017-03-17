@@ -3,13 +3,13 @@
 angular
   .module('multimocks.responseDelay', [])
 
-  .factory('responseDelay', [
+  .factory('delayMockResponse', [
     '$q',
     '$timeout',
     'scenarioMocks',
     function ($q, $timeout, scenarioMocks) {
       return {
-        response: function (response) {
+        delay: function (response) {
           var delayedResponse = $q.defer();
 
           $timeout(function () {
@@ -18,13 +18,20 @@ angular
 
           return delayedResponse.promise;
         }
-      };
+      }
     }
   ])
+
+  .factory('delayResponses', ['delayMockResponse', function (responseDelayer) {
+    return {
+      response: delayMockResponse.delay,
+      responseError: delayMockResponse.delay
+    };
+  }])
 
   .config([
     '$httpProvider',
     function ($httpProvider) {
-      $httpProvider.interceptors.push('responseDelay');
+      $httpProvider.interceptors.push('delayResponses');
     }
   ]);
